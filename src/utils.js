@@ -49,7 +49,18 @@ function getCountdownMessage(targetDateStr, tzName) {
     const diffDays = target.diff(today, 'day');
 
     if (diffDays > 0) {
-        return `同學們，距離專題系展還剩 ${diffDays} 天。😮💨`;
+        const profMessages = [
+            `同學們，距離專題系展還剩 ${diffDays} 天。進度沒問題吧？老師很期待喔。🙂`,
+            `距離系展剩 ${diffDays} 天了，不要跟我說你的專案又跑不起來了，趕快修。☕`,
+            `老師看了一下日曆，再 ${diffDays} 天就系展了。你們的文件寫完沒？我看是還沒。👓`,
+            `同學們，倒數 ${diffDays} 天。不要再熬夜打遊戲了，專題能 Demo 才是真的。😮💨`,
+            `剩 ${diffDays} 天。你的架構圖還是一團亂，今天下課來找我一下。📁`,
+            `還有 ${diffDays} 天。我猜你們的功能只做了一半，另一半還在夢裡對吧？醒醒啊！🔔`,
+            `距離系展只剩 ${diffDays} 天。別以為我不知道你們都在看著 ChatGPT 發呆，該動手寫了吧？🧐`,
+            `這禮拜的進度報告呢？距離系展只剩 ${diffDays} 天，不要再跟我說下週會補上了。📝`
+        ];
+        const randomMsg = profMessages[Math.floor(Math.random() * profMessages.length)];
+        return randomMsg;
     } else if (diffDays === 0) {
         return `今天就是專題系展！🎉（雖然你可能笑不出來）`;
     } else {
