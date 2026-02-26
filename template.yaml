@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Discord Bot for 專題系展 Countdown
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs20.x
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        # 預設值，部署時可透過 --parameter-overrides 覆蓋或直接在此修改
+        TARGET_DATE: "2026-05-19"
+        TIMEZONE: "Asia/Taipei"
+        COMMAND_NAME: "daysleft"
+        DISCORD_PUBLIC_KEY: ""
+        DISCORD_BOT_TOKEN: ""
+        DISCORD_CHANNEL_ID: ""
+
+Resources:
+  InteractionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/interactions.handler
+      FunctionUrlConfig:
+        AuthType: NONE
+
+  CronFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/cron.handler
+      Events:
+        DailyNotificationEvent:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: cron(0 20 * * ? *)
+            ScheduleExpressionTimezone: Asia/Taipei
+
+Outputs:
+  InteractionsFunctionUrl:
+    Description: "Function URL for Discord Interactions Webhook"
+    Value: !GetAtt InteractionsFunctionUrl.FunctionUrl
